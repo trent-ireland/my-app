@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import './SearchBar.css';
 
-const SearchBar = (props) => {
+const SearchBar = ({ setSearchResults }) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [searchResults, setSearchResults] = useState([]); // Initialize with an empty array
 
   const handleSearch = () => {
-    fetch(`https://api.spotify.com/v1/search?q=${searchTerm}`)
+    fetch(`https://api.spotify.com/v1/search?q=${searchTerm}&type=track`, {
+      headers: {
+        'Authorization': 'Bearer YOUR_SPOTIFY_ACCESS_TOKEN' // Replace with your token
+      }
+    })
       .then(response => response.json())
       .then(data => {
-        // Assuming the response structure includes 'results'
-        setSearchResults(data.results);
+        setSearchResults(data.tracks.items); // Assuming you're searching for tracks
       })
       .catch(error => {
         console.error('Error fetching data:', error);
@@ -27,17 +29,6 @@ const SearchBar = (props) => {
       <button className="SearchButton" onClick={handleSearch}>
         SEARCH
       </button>
-
-      <div className="SearchResults">
-        {searchResults.map(result => (
-          <div key={result.id} className="SearchResultItem">
-            {/* Display search result details here */}
-            <p>{result.name}</p>
-            <p>{result.artist}</p>
-            <p>{result.album}</p>
-          </div>
-        ))}
-      </div>
     </div>
   );
 }
