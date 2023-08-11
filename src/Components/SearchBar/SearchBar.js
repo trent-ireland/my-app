@@ -9,8 +9,7 @@ const SearchBar = (props) => {
     fetch(`https://api.spotify.com/v1/search?q=${searchTerm}`)
       .then(response => response.json())
       .then(data => {
-        // Process the data as needed
-        // For example, update state with search results
+        // Assuming the response structure includes 'results'
         setSearchResults(data.results);
       })
       .catch(error => {
@@ -33,7 +32,9 @@ const SearchBar = (props) => {
         {searchResults.map(result => (
           <div key={result.id} className="SearchResultItem">
             {/* Display search result details here */}
-            {/* For example: <p>{result.name}</p> */}
+            <p>{result.name}</p>
+            <p>{result.artist}</p>
+            <p>{result.album}</p>
           </div>
         ))}
       </div>
